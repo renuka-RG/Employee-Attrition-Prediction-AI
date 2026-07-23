@@ -3,7 +3,7 @@ import numpy as np
 import joblib
 
 app = Flask(__name__)
-model = joblib.load('model.pkl')
+model = joblib.load('attrition_model.pkl')
 
 @app.route('/')
 def home():
