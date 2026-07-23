@@ -1,11 +1,9 @@
 from flask import Flask, render_template, request
-import pickle
 import numpy as np
+import joblib
 
 app = Flask(__name__)
-
-# Load the saved model file
-model = pickle.load(open('attrition_model.pkl', 'rb'))
+model = joblib.load('model.pkl')
 
 @app.route('/')
 def home():
@@ -13,7 +11,6 @@ def home():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    # Get user inputs from the webpage
     # Get user inputs from the webpage
     age = float(request.form['age'])
     monthly_income = float(request.form['monthly_income'])
@@ -24,13 +21,8 @@ def predict():
     # Send inputs to model
     features = np.array([[age, monthly_income, distance, job_satisfaction, years_at_company]])
     prediction = model.predict(features)[0]
-    
-    if prediction == 1:
-        result = "High Risk: Employee is likely to LEAVE"
-    else:
-        result = "Low Risk: Employee is likely to STAY"
-        
-    return render_template('index.html', prediction_text=f'Result: {result}')
 
-if __name__ == "__main__":
+    return render_template('index.html', prediction_text=f'Employee Attrition Prediction: {prediction}')
+
+if __name__ == '__main__':
     app.run(debug=True)
