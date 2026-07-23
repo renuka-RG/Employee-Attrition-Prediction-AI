@@ -14,12 +14,15 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
     # Get user inputs from the webpage
+    # Get user inputs from the webpage
     age = float(request.form['age'])
     monthly_income = float(request.form['monthly_income'])
     distance = float(request.form['distance_from_home'])
-    
+    job_satisfaction = float(request.form['job_satisfaction'])
+    years_at_company = float(request.form['years_at_company'])
+
     # Send inputs to model
-    features = np.array([[age, monthly_income, distance]])
+    features = np.array([[age, monthly_income, distance, job_satisfaction, years_at_company]])
     prediction = model.predict(features)[0]
     
     if prediction == 1:
